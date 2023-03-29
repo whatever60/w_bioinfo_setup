@@ -53,9 +53,9 @@ pip3 install scanpy scrublet leidenalg MACS3 biopython pygenomeviz pysam checkm-
 
 
 # R utilities
-mkdir -p $HOME/R/x86_64-pc-linux-gnu/4.1
+# mkdir -p $HOME/R/x86_64-pc-linux-gnu/4.1
 # R --silent --slave --no-save --no-restore -e
-Rscript --silent --slave --no-save --no-restore r_packages.r
+# Rscript --silent --slave --no-save --no-restore $(pwd)/r_packages.r
 
 
 # parallel
