@@ -49,7 +49,7 @@ pip3 install dgl -f https://data.dgl.ai/wheels/repo.html
 pip3 install dglgo -f https://data.dgl.ai/wheels-test/repo.html
 pip3 install ipywidgets ipython jupyterlab
 pip3 install black rich
-pip3 install scanpy scrublet leidenalg MACS3 biopython pygenomeviz
+pip3 install scanpy scrublet leidenalg MACS3 biopython pygenomeviz pysam checkm-genome multiqc cutadapt aniclustermap
 
 
 # R utilities
@@ -113,8 +113,6 @@ rm fastqc_v$FASTQC_VERSION.zip
 # echo "#!/bin/bash" > $HOME/FastQC/fastqc
 # echo "java -jar $HOME/FastQC/fastqc.jar \$@" >> $HOME/FastQC/fastqc
 
-# MultiQC
-pip3 install multiqc
 
 # Trimmomatic
 TRIMMOMATIC_VERSION=0.39
@@ -126,8 +124,6 @@ echo "java -jar $HOME/Trimmomatic-$TRIMMOMATIC_VERSION/trimmomatic-0.39.jar \$@"
 chmod +x $HOME/Trimmomatic-$TRIMMOMATIC_VERSION/trimmomatic
 rm Trimmomatic-$TRIMMOMATIC_VERSION.zip
 
-# cutadapt
-pip3 install cutadapt
 
 # fastp
 wget http://opengene.org/fastp/fastp
@@ -194,10 +190,6 @@ export PATH=$PATH:$HOME/prodigal
 get_binary_from_github "matsen" "pplacer" "v1.1.alpha19/pplacer-linux-v1.1.alpha19.zip"
 
 
-# CheckM
-pip3 install pysam checkm-genome
-
-
 # kraken2
 kraken_v=2.1.2
 wget -qO- https://github.com/DerrickWood/kraken2/archive/refs/tags/v$kraken_v.tar.gz | tar xz
@@ -211,7 +203,6 @@ rm -rf $HOME/kraken2-$kraken_v
 # fastANI
 fastANI_v=1.33
 get_binary_from_github "ParBLiSS" "FastANI" "v$fastANI_v/fastANI-Linux64-v$fastANI_v.zip"
-pip3 install aniclustermap
 
 
 # Salmon
