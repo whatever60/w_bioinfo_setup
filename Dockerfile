@@ -1,14 +1,20 @@
 FROM ubuntu:22.04
 
-COPY setup_sudo.sh /root
-COPY setup.sh /root
-COPY r_packages.r /root
+RUN useradd -ms /bin/bash ubuntu
+USER ubuntu
+WORKDIR /home/ubuntu
 
-RUN chmod +x /root/setup_sudo.sh && \
-    chmod +x /root/setup.sh
+COPY setup_sudo.sh .
+COPY setup.sh .
+COPY r_packages.r .
 
-RUN /root/setup_sudo.sh
-RUN /root/setup.sh
-RUN Rscript --silent --slave --no-save --no-restore /root/r_packages.r
+RUN chmod +x /home/setup_sudo.sh
+RUN chmod +x /home/setup.sh
+
+USER root
+RUN /home/ubuntu/setup_sudo.sh
+
+USER ubuntu
+RUN /home/ubuntu/setup.sh
 
 CMD ["/bin/bash"]

@@ -55,7 +55,6 @@ pip3 install scanpy scrublet leidenalg MACS3 biopython pygenomeviz pysam checkm-
 # R utilities
 # mkdir -p $HOME/R/x86_64-pc-linux-gnu/4.1
 # R --silent --slave --no-save --no-restore -e
-# Rscript --silent --slave --no-save --no-restore $(pwd)/r_packages.r
 
 
 # parallel
@@ -297,3 +296,11 @@ export PATH=$PATH:$(pwd)/foldseek/bin/
 # MMseqs2
 wget -qO- https://mmseqs.com/latest/mmseqs-linux-avx2.tar.gz | tar xz
 export PATH=$(pwd)/mmseqs/bin/:$PATH
+
+
+# QUAST
+quast_v=5.2.0
+wget -qO- https://github.com/ablab/quast/releases/download/quast_$quast_v/quast-$quast_v.tar.gz | tar xz
+cd $HOME/quast-$quast_v
+python2 setup.py install_full
+cd ~
