@@ -3,7 +3,7 @@
 sudo apt update
 sudo apt install nala -y
 
-sudo nala install -y fish python2
+sudo nala install -y fish python2 r-base
 
 # AWS utilities
 sudo nala install -y awscli s3fs
