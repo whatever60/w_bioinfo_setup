@@ -8,8 +8,8 @@ COPY setup_sudo.sh .
 COPY setup.sh .
 COPY r_packages.r .
 
-RUN chmod +x /home/setup_sudo.sh
-RUN chmod +x /home/setup.sh
+RUN chmod +x /home/ubuntu/setup_sudo.sh
+RUN chmod +x /home/ubuntu/setup.sh
 
 USER root
 RUN /home/ubuntu/setup_sudo.sh
@@ -17,4 +17,4 @@ RUN /home/ubuntu/setup_sudo.sh
 USER ubuntu
 RUN /home/ubuntu/setup.sh
 
-CMD ["/bin/bash"]
+CMD ["/usr/bin/fish"]
