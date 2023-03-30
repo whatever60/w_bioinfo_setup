@@ -32,7 +32,6 @@ get_binary_from_github() {
 }
 
 
-
 export PATH=$PATH:$HOME
 
 # python
