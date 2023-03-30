@@ -31,6 +31,8 @@ get_binary_from_github() {
     export PATH="$PATH:$PWD/$project_name"
 }
 
+start_dir=$(pwd)
+cd ~
 
 export PATH=$PATH:$HOME
 
@@ -303,3 +305,6 @@ wget -qO- https://github.com/ablab/quast/releases/download/quast_$quast_v/quast-
 cd $HOME/quast-$quast_v
 python2 setup.py install_full
 cd ~
+
+
+cd $start_dir
