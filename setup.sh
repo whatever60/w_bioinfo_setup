@@ -2,6 +2,8 @@ get_binary_from_github() {
     local group_name=$1
     local project_name=$2
     local path=$3
+    # folder_name is an optional keyword argument --folder_name
+    local folder_name=$4
     
     release_url="https://github.com/${group_name}/${project_name}/releases/download/${path}"
     filename=$(basename "$path")
@@ -9,12 +11,17 @@ get_binary_from_github() {
     # check if release_url ends with .tar.gz or .zip
     # Download the release archive and extract it
     if [[ $filename == *.zip ]]; then
-        folder_name=$(basename "$filename" .zip)
+        # if folder_name is not provided, use the filename without extension
+        if [[ -z $folder_name ]]; then
+            folder_name=$(basename "$filename" .zip)
+        fi
         wget $release_url
         unzip -q $filename
         rm $filename
     elif [[ $filename == *.tar.gz ]]; then
-        folder_name=$(basename "$filename" .tar.gz)
+        if [[ -z $folder_name ]]; then
+            folder_name=$(basename "$filename" .tar.gz)
+        fi
         wget -qO- $release_url | tar xz
     elif [[ $filename == *.tar.bz2 ]]; then
         folder_name=$(basename "$filename" .tar.bz2)
@@ -30,6 +37,7 @@ get_binary_from_github() {
     # Add the project's executable directory to the PATH environment variable
     export PATH="$PATH:$PWD/$project_name"
 }
+
 
 start_dir=$(pwd)
 cd ~
@@ -50,12 +58,14 @@ pip3 install dgl -f https://data.dgl.ai/wheels/repo.html
 pip3 install dglgo -f https://data.dgl.ai/wheels-test/repo.html
 pip3 install ipywidgets ipython jupyterlab
 pip3 install black rich
-pip3 install scanpy scrublet leidenalg MACS3 biopython pygenomeviz pysam checkm-genome multiqc cutadapt aniclustermap
+pip3 install scanpy scrublet leidenalg MACS3 biopython pygenomeviz pysam checkm-genome multiqc cutadapt aniclustermap pathlib pathlib2
 
 
 # R utilities
-# mkdir -p $HOME/R/x86_64-pc-linux-gnu/4.1
+mkdir -p $HOME/R/x86_64-pc-linux-gnu/4.1
+mkdir -p $HOME/R/x86_64-pc-linux-gnu/4.2
 # R --silent --slave --no-save --no-restore -e
+Rscript --silent --slave --no-save --no-restore $start_dir/r_packages.r
 
 
 # parallel
@@ -68,7 +78,7 @@ pip3 install scanpy scrublet leidenalg MACS3 biopython pygenomeviz pysam checkm-
 # md5sum install.sh | grep cc21b4c943fd03e93ae1ae49e28573c0
 # sha512sum install.sh | grep da012ec113b49a54e705f86d51e784ebced224fdf
 # bash install.sh
-PARALLEL_VERION=20230222
+PARALLEL_VERION=20230322
 wget -qO- http://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2 | tar xj
 cd $HOME/parallel-$PARALLEL_VERION
 ./configure --prefix $HOME/parallel
@@ -98,9 +108,10 @@ export PATH=$PATH:$HOME/hisat2
 
 
 # sra-tools
-SRATOOLS_VERSION="sratoolkit.3.0.1"
-wget -qO- https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz | tar xz
-export PATH=$PATH:$HOME/$SRATOOLS_VERSION-ubuntu64/bin
+SRATOOLS_VERSION="sratoolkit.3.0.2"
+wget -qO- https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.2/sratoolkit.3.0.2-ubuntu64.tar.gz | tar xz
+mv $SRATOOLS_VERSION-ubuntu64 sratoolkit
+export PATH=$PATH:$HOME/sratoolkit/bin
 
 
 # Sequence data QC and preprocessing
@@ -118,11 +129,13 @@ rm fastqc_v$FASTQC_VERSION.zip
 TRIMMOMATIC_VERSION=0.39
 wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-$TRIMMOMATIC_VERSION.zip
 unzip Trimmomatic-$TRIMMOMATIC_VERSION.zip
-export PATH=$PATH:$HOME/Trimmomatic-$TRIMMOMATIC_VERSION
-echo "#!/bin/bash" > $HOME/Trimmomatic-$TRIMMOMATIC_VERSION/trimmomatic
-echo "java -jar $HOME/Trimmomatic-$TRIMMOMATIC_VERSION/trimmomatic-0.39.jar \$@" >> $HOME/Trimmomatic-$TRIMMOMATIC_VERSION/trimmomatic
-chmod +x $HOME/Trimmomatic-$TRIMMOMATIC_VERSION/trimmomatic
 rm Trimmomatic-$TRIMMOMATIC_VERSION.zip
+mv Trimmomatic-$TRIMMOMATIC_VERSION Trimmomatic
+# https://unix.stackexchange.com/questions/3051/how-to-echo-a-bang
+echo '#!/bin/bash' > Trimmomatic/trimmomatic  # must be single quotes
+echo "java -jar Trimmomatic/trimmomatic-0.39.jar \$@" >> Trimmomatic/trimmomatic
+chmod +x $HOME/Trimmomatic/trimmomatic
+export PATH=$PATH:$HOME/Trimmomatic
 
 
 # fastp
@@ -138,11 +151,12 @@ export PATH=$PATH:$HOME/cufflinks
 
 
 # jellyfish
-get_binary_from_github "gmarcais" "Jellyfish" "v2.3.0/bin/jellyfish-2.3.0.tar.gz"
+get_binary_from_github "gmarcais" "Jellyfish" "v2.3.0/jellyfish-2.3.0.tar.gz"
 
 
 # trinity
-get_binary_from_github "trinityrnaseq" "trinityrnaseq" "Trinity-v2.15.1/trinityrnaseq-v2.15.1.FULL.tar.gz"
+trinity_v=2.15.1
+get_binary_from_github "trinityrnaseq" "trinityrnaseq" "Trinity-v$trinity_v/trinityrnaseq-v$trinity_v.FULL.tar.gz" trinityrnaseq-v$trinity_v
 
 
 # StringTie
@@ -152,7 +166,8 @@ get_binary_from_github "gpertea" "stringtie" "v2.2.1/util/stringtie-2.2.1.Linux_
 # subread
 SUBREAD_V=2.0.3
 wget -qO- https://gigenet.dl.sourceforge.net/project/subread/subread-$SUBREAD_V/subread-$SUBREAD_V-Linux-x86_64.tar.gz | tar xz
-export PATH=$PATH:$HOME/subread-$SUBREAD_V-Linux-x86_64/bin
+mv subread-$SUBREAD_V-Linux-x86_64 subread
+export PATH=$PATH:$HOME/subread
 
 
 # prokka
@@ -174,8 +189,9 @@ make
 make check
 make install
 (cd easel; make install)
-export PATH=$PATH:$HOME/hmmer$HMMER_V/bin
 cd ~
+rm -rf hmmer-$HMMER_V
+export PATH=$HOME/hmmer/bin:$PATH
 
 
 # Prodigal
@@ -187,7 +203,7 @@ export PATH=$PATH:$HOME/prodigal
 
 
 # pplacer
-get_binary_from_github "matsen" "pplacer" "v1.1.alpha19/pplacer-linux-v1.1.alpha19.zip"
+get_binary_from_github "matsen" "pplacer" "v1.1.alpha19/pplacer-linux-v1.1.alpha19.zip" "pplacer-Linux-v1.1.alpha19"
 
 
 # kraken2
@@ -202,7 +218,9 @@ rm -rf $HOME/kraken2-$kraken_v
 
 # fastANI
 fastANI_v=1.33
-get_binary_from_github "ParBLiSS" "FastANI" "v$fastANI_v/fastANI-Linux64-v$fastANI_v.zip"
+wget https://github.com/ParBLiSS/FastANI/releases/download/v$fastANI_v/fastANI-Linux64-v$fastANI_v.zip
+unzip fastANI-Linux64-v$fastANI_v.zip
+rm fastANI-Linux64-v$fastANI_v.zip
 
 
 # Salmon
@@ -211,13 +229,14 @@ get_binary_from_github "COMBINE-lab" "salmon" "v$salmon_v/salmon-$salmon_v\_linu
 
 
 # RSEM
+# blockmodeling will fail to install. It doesn't matter since we've installed it in R.
 RSEM_v=1.3.3
 wget -qO- https://github.com/deweylab/RSEM/archive/refs/tags/v$RSEM_v.tar.gz | tar xz
 cd RSEM-$RSEM_v
-make
 make ebseq
 cd ~
-export PATH=$PATH:$HOME/RSEM-$RSEM_v
+mv RSEM-$RSEM_v RSEM
+export PATH=$PATH:$HOME/RSEM
 
 
 # kallisto
@@ -297,14 +316,5 @@ export PATH=$PATH:$(pwd)/foldseek/bin/
 # MMseqs2
 wget -qO- https://mmseqs.com/latest/mmseqs-linux-avx2.tar.gz | tar xz
 export PATH=$(pwd)/mmseqs/bin/:$PATH
-
-
-# QUAST
-quast_v=5.2.0
-wget -qO- https://github.com/ablab/quast/releases/download/quast_$quast_v/quast-$quast_v.tar.gz | tar xz
-cd $HOME/quast-$quast_v
-python2 setup.py install_full
-cd ~
-
 
 cd $start_dir
