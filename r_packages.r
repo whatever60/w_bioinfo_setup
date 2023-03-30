@@ -1,3 +1,4 @@
+options(needs.promptUser = FALSE)
 install.packages(c("tidyverse", "dplyr", "ggplot2", "pheatmap", "hexbin", "devtools", "languageserver", "Seurat", "blockmodeling"))
 
 if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")

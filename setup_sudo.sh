@@ -11,7 +11,7 @@ sudo apt install nala -y
 # sudo apt-get update
 # sudo apt-get install rvm
 
-sudo nala install -y fish python2 python2-dev python-setuptools python3-dev r-base wget curl
+sudo nala install -y fish python2 python2-dev python-setuptools python3-dev r-base wget curl tmux git htop parallel
 # sudo nala install -y libssl1.0-dev
 # cd /lib/x86_64-linux-gnu
 # sudo ln -s libssl.so.1.0.0 libssl.so.10

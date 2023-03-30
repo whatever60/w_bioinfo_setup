@@ -225,7 +225,7 @@ rm fastANI-Linux64-v$fastANI_v.zip
 
 # Salmon
 salmon_v=1.10.0
-get_binary_from_github "COMBINE-lab" "salmon" "v$salmon_v/salmon-$salmon_v\_linux_x86_64.tar.gz"
+get_binary_from_github COMBINE-lab salmon v$salmon_v/salmon-${salmon_v}_linux_x86_64.tar.gz salmon-latest_linux_x86_64
 
 
 # RSEM
@@ -233,6 +233,7 @@ get_binary_from_github "COMBINE-lab" "salmon" "v$salmon_v/salmon-$salmon_v\_linu
 RSEM_v=1.3.3
 wget -qO- https://github.com/deweylab/RSEM/archive/refs/tags/v$RSEM_v.tar.gz | tar xz
 cd RSEM-$RSEM_v
+make
 make ebseq
 cd ~
 mv RSEM-$RSEM_v RSEM
@@ -316,5 +317,7 @@ export PATH=$PATH:$(pwd)/foldseek/bin/
 # MMseqs2
 wget -qO- https://mmseqs.com/latest/mmseqs-linux-avx2.tar.gz | tar xz
 export PATH=$(pwd)/mmseqs/bin/:$PATH
+
+echo $PATH >> $HOME/.bashrc
 
 cd $start_dir

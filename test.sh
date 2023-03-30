@@ -40,4 +40,5 @@ get_binary_from_github() {
 }
 
 # use `wget -qO-` or `curl -L`
-get_binary_from_github "gmarcais" "Jellyfish" "v2.3.0/jellyfish-2.3.0.tar.gz"
+salmon_v=1.10.0
+get_binary_from_github "COMBINE-lab" "salmon" "v$salmon_v/salmon-${salmon_v}_linux_x86_64.tar.gz" salmon-latest_linux_x86_64
