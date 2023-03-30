@@ -65,6 +65,7 @@ pip3 install scanpy scrublet leidenalg MACS3 biopython pygenomeviz pysam checkm-
 mkdir -p $HOME/R/x86_64-pc-linux-gnu/4.1
 mkdir -p $HOME/R/x86_64-pc-linux-gnu/4.2
 # R --silent --slave --no-save --no-restore -e
+Rscript --silent --slave --no-save --no-restore -e 'install.packages("BiocManager", lib="~/R/x86_64-pc-linux-gnu/4.1")'
 Rscript --silent --slave --no-save --no-restore $start_dir/r_packages.r
 
 
@@ -214,6 +215,7 @@ cd kraken2-$kraken_v
 ./install_kraken2.sh $HOME/kraken2
 export PATH=$PATH:$HOME/kraken2
 rm -rf $HOME/kraken2-$kraken_v
+cd ~
 
 
 # fastANI
@@ -290,8 +292,11 @@ export PATH=$PATH:$HOME/pwmscan/bin
 
 # Protein
 # HH-suite
+mkdir -p ~/hh-suite
+cd ~/hh-suite
 wget -qO- https://github.com/soedinglab/hh-suite/releases/download/v3.3.0/hhsuite-3.3.0-SSE2-Linux.tar.gz | tar xz
 export PATH=$PATH:$(pwd)/bin:$(pwd)/scripts
+cd ~
 
 # TM-align
 mkdir -p ~/TM-align
