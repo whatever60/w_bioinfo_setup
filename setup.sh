@@ -58,7 +58,7 @@ pip3 install dgl -f https://data.dgl.ai/wheels/repo.html
 pip3 install dglgo -f https://data.dgl.ai/wheels-test/repo.html
 pip3 install ipywidgets ipython jupyterlab
 pip3 install black rich
-pip3 install scanpy scrublet leidenalg MACS3 biopython pygenomeviz pysam checkm-genome multiqc cutadapt aniclustermap pathlib pathlib2
+pip3 install scanpy scrublet leidenalg MACS3 biopython pygenomeviz pysam checkm-genome multiqc cutadapt aniclustermap pathlib pathlib2 bioinfokit
 
 
 # R utilities
@@ -114,6 +114,35 @@ wget -qO- https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.2/sratoolkit.3.0.2-ubun
 mv $SRATOOLS_VERSION-ubuntu64 sratoolkit
 export PATH=$PATH:$HOME/sratoolkit/bin
 
+# samtools
+wget -qO- https://github.com/samtools/samtools/releases/download/1.17/samtools-1.17.tar.bz2 | tar xj
+mv samtools-1.17 samtools
+cd samtools
+./configure --prefix $HOME/samtools
+make
+make install
+cd ~
+export PATH=$PATH:$HOME/samtools/bin
+
+# bcftools
+wget -qO- https://github.com/samtools/bcftools/releases/download/1.17/bcftools-1.17.tar.bz2 | tar xj
+mv bcftools-1.17 bcftools
+cd bcftools
+./configure --prefix $HOME/bcftools
+make
+make install
+cd ~
+export PATH=$PATH:$HOME/bcftools/bin
+
+# htslib
+wget -qO- https://github.com/samtools/htslib/releases/download/1.17/htslib-1.17.tar.bz2 | tar xj
+mv htslib-1.17 htslib
+cd htslib
+./configure --prefix $HOME/htslib
+make
+make install
+cd ~
+export PATH=$PATH:$HOME/htslib/bin
 
 # Sequence data QC and preprocessing
 # FastQC
@@ -297,6 +326,14 @@ cd ~/hh-suite
 wget -qO- https://github.com/soedinglab/hh-suite/releases/download/v3.3.0/hhsuite-3.3.0-SSE2-Linux.tar.gz | tar xz
 export PATH=$PATH:$(pwd)/bin:$(pwd)/scripts
 cd ~
+
+# TM-score
+mkdir -p ~/TM-score
+cd ~/TM-score
+wget https://zhanggroup.org/TM-score/TMscore.cpp
+g++ -static -O3 -ffast-math -lm -o TMscore TMscore.cpp
+cd ~
+export PATH=$PATH:$HOME/TM-score
 
 # TM-align
 mkdir -p ~/TM-align

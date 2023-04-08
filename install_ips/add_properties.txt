@@ -1,0 +1,13 @@
+phobius.signature.library.release=1.01
+binary.phobius.pl.path=bin/phobius/1.01/phobius.pl
+
+signalp_euk.signature.library.release=4.1
+signalp_gram_positive.signature.library.release=4.1
+signalp_gram_negative.signature.library.release=4.1
+binary.signalp.path=bin/signalp/4.1/signalp
+signalp.perl.library.dir=bin/signalp/4.1/lib
+
+tmhmm.signature.library.release=2.0c
+binary.tmhmm.path=bin/tmhmm/2.0c/decodeanhmm
+
+tmhmm.model.path=data/tmhmm/2.0c/TMHMM2.0c.model
