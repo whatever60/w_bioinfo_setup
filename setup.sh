@@ -172,6 +172,12 @@ export PATH=$PATH:$HOME/Trimmomatic
 wget http://opengene.org/fastp/fastp
 chmod a+x ./fastp
 
+# UCSC utilities
+mkdir -p $HOME/ucsc
+rsync -aP rsync://hgdownload.soe.ucsc.edu/genome/admin/exe/linux.x86_64/ $HOME/ucsc
+chmod a+x $HOME/ucsc/bedToBigBed
+cd ~
+export PATH=$PATH:$HOME/ucsc
 
 # cufflinks
 cufflinks_v=2.2.1
