@@ -325,6 +325,8 @@ cd ~
 export PATH=$PATH:$HOME/pwmscan/bin
 
 
+
+
 # Protein
 # HH-suite
 mkdir -p ~/hh-suite

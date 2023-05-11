@@ -50,5 +50,11 @@ cd ~
 # for ruby
 sudo nala install libtool libyaml-dev libffi-dev -y
 
+# git lfs
+(. /etc/lsb-release &&
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh |
+sudo env os=ubuntu dist="${DISTRIB_CODENAME}" bash)
+
+sudo nala install git-lfs
 
 cd $start_dir
