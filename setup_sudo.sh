@@ -1,5 +1,7 @@
 # sudo bash setup_sudo.sh
 
+DEBIAN_FRONTEND=noninteractive
+
 start_dir=$(pwd)
 cd ~
 
@@ -32,7 +34,6 @@ sudo nala install -y r-base r-base-core r-base-dev r-base-html r-doc-html r-reco
 # JAVA environment
 sudo nala install default-jre -y
 
-
 # prokka
 sudo nala install -y ncbi-tools-bin libdatetime-perl libxml-simple-perl libdigest-md5-perl git default-jre bioperl
 export PERL_MM_USE_DEFAULT=1
@@ -49,6 +50,10 @@ cd ~
 
 # for ruby
 sudo nala install libtool libyaml-dev libffi-dev -y
+
+# go
+sudo rm -rf /usr/local/go && wget -qO- https://go.dev/dl/go1.20.4.linux-amd64.tar.gz | sudo tar -C /usr/local -xz
+export PATH=$PATH:/usr/local/go/bin
 
 # git lfs
 (. /etc/lsb-release &&

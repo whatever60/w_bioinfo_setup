@@ -1,15 +1,50 @@
 options(needs.promptUser = FALSE)
-install.packages(c("tidyverse", "dplyr", "ggplot2", "pheatmap", "hexbin", "devtools", "languageserver", "Seurat", "blockmodeling"))
 
-if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-BiocManager::install(c("DESeq2", "edgeR", "limma", "gplots", "RNAseq123", "Mus.musculus", "Glimma", "vsn", "DiffBind"))
+# CRAN packages
+cran_packages <- c(
+  "tidyverse",
+  "dplyr",
+  "ggplot2",
+  "pheatmap",
+  "hexbin",
+  "devtools",
+  "languageserver",
+  "Seurat",
+  "blockmodeling"
+)
+install.packages(cran_packages, quiet = TRUE)
 
+# Bioconductor packages
+bioc_packages <- c(
+  "DESeq2",
+  "edgeR",
+  "limma",
+  "gplots",
+  "RNAseq123",
+  "Mus.musculus",
+  "Glimma",
+  "vsn",
+  "DiffBind",
+  "BiocParallel",
+  "genefilter"
+)
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager", quiet = TRUE)
+BiocManager::install(bioc_packages, quiet = TRUE)
+
+# Other packages
+other_packages <- c(
+  "devtools",
+  "Signac",
+  "IRkernel",
+  "languageserver"
+)
+install.packages(other_packages, quiet = TRUE)
+
+# GitHub package
 library(devtools)
-install_github("stephens999/ashr")
+install_github("stephens999/ashr", quiet = TRUE)
 
-setRepositories(ind=1:3)
-install.packages("Signac")
-
-install.packages("IRkernel")
+# IRkernel installation
+install.packages("IRkernel", quiet = TRUE)
 IRkernel::installspec()
-install.packages("languageserver")
