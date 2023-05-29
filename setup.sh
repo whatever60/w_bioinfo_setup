@@ -220,7 +220,7 @@ export PATH=$PATH:$SOFTWARE_PATH/bcftools/bin
 
 # UCSC utilities
 mkdir -p $SOFTWARE_PATH/ucsc
-rsync -aP rsync://hgdownload.soe.ucsc.edu/genome/admin/exe/linux.x86_64/ $SOFTWARE_PATH/ucsc
+rsync -aqP rsync://hgdownload.soe.ucsc.edu/genome/admin/exe/linux.x86_64/ $SOFTWARE_PATH/ucsc
 chmod a+x $SOFTWARE_PATH/ucsc/bedToBigBed
 cd $SOFTWARE_PATH
 export PATH=$PATH:$SOFTWARE_PATH/ucsc
@@ -231,7 +231,7 @@ echo_blue "Installing FastQC, Trimmomatic, fastp..."
 # FastQC
 FASTQC_VERSION=0.12.1
 wget -q https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v$FASTQC_VERSION.zip
-unzip fastqc_v$FASTQC_VERSION.zip
+unzip -q fastqc_v$FASTQC_VERSION.zip
 export PATH=$PATH:$SOFTWARE_PATH/FastQC
 rm fastqc_v$FASTQC_VERSION.zip
 chmod 777 $SOFTWARE_PATH/FastQC/fastqc
@@ -242,7 +242,7 @@ chmod 777 $SOFTWARE_PATH/FastQC/fastqc
 # Trimmomatic
 TRIMMOMATIC_VERSION=0.39
 wget -q http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-$TRIMMOMATIC_VERSION.zip
-unzip Trimmomatic-$TRIMMOMATIC_VERSION.zip
+unzip -q Trimmomatic-$TRIMMOMATIC_VERSION.zip
 rm Trimmomatic-$TRIMMOMATIC_VERSION.zip
 mv Trimmomatic-$TRIMMOMATIC_VERSION Trimmomatic
 # https://unix.stackexchange.com/questions/3051/how-to-echo-a-bang
@@ -301,8 +301,8 @@ export PATH=$PATH:$SOFTWARE_PATH/RSEM
 
 # kallisto
 kallisto_v=0.46.1
-get_binary_from_github "pachterlab" "kallisto" "v$kallisto_v/kallisto_linux-v$kallisto_v.tar.gz"
-
+wget -qO- https://github.com/pachterlab/kallisto/releases/download/v$kallisto_v/kallisto_linux-v$kallisto_v.tar.gz | tar xz
+export PATH=$PATH:$SOFTWARE_PATH/kallisto
 
 # ====================
 echo_blue "Installing prokka, Prodigal, pplacer, kraken2, fastANI..."
@@ -396,9 +396,9 @@ export PATH=$PATH:$SOFTWARE_PATH/pwmscan/bin
 
 # ====================
 echo_blue "Installing nextflow..."
-wget -qO- https://get.nextflow.io | bash >/dev/null
+wget -qO- https://get.nextflow.io | bash 2>/dev/null >/dev/null
 chmod +x nextflow
-nextflow self-update >/dev/null
+nextflow self-update 2>/dev/null >/dev/null
 
 # ====================
 # echo_blue "Installing mamba..."
