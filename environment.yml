@@ -1,0 +1,35 @@
+name: R
+channels:
+  - conda-forge
+  - bioconductor
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.10.2
+  - r=4.2
+  - pip
+  - pyrsistent
+  - r-remotes
+  - r-devtools
+  - r-essentials
+  - notebook
+  - nb_conda_kernels
+  - jupyter
+  - jupyter_contrib_nbextensions
+  - r-irkernel
+  - r-ggplot2
+  - r-dplyr
+  - r-sf
+  - r-ggrepel
+  - r-cowplot
+  - r-maps
+  - r-seurat
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=11.7
+  - bioconductor-scater
+  - bioconductor-scran
+  - bioconductor-duoclustering2018
+  - pip:
+    - scanpy
