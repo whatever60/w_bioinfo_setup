@@ -483,6 +483,14 @@ echo \#\!/bin/bash > $SOFTWARE_PATH/picard
 echo "java -jar $SOFTWARE_PATH/picard.jar \$@" >> $SOFTWARE_PATH/picard
 chmod +x $SOFTWARE_PATH/picard
 
+# Infernal (RNA alignment)
+wget -qO- http://eddylab.org/infernal/infernal-1.1.5-linux-intel-gcc.tar.gz | tar xz
+
+# ====================
+# Genome annotation
+mamba install -y -c conda-forge -c bioconda -c defaults prokka ssu-align trnascan-se barrnap aragorn minced piler-cr macsyfinder
+macsydata install -u CASFinder==3.1.0
+
 
 # ====================
 echo "Finishing..."
